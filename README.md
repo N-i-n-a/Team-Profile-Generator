@@ -16,6 +16,12 @@ To install dependancies please run the following command:
 npm install
 ```
 
+## Usage
+To invoke the application run the following command:
+```
+node index.js
+```
+
 ## Tests
 To run tests please run the following command:
 ```
