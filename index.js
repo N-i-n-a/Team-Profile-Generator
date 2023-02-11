@@ -9,6 +9,8 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./src/page-template.js");
+const team = [];
+let employee = ''
 
 
 // TODO: Write Code to gather information about the development team members, and render the HTML file.
@@ -104,20 +106,31 @@ function chooseEmployee () {
         }
     ])
     .then ((value) => {
-        if (value.choices === 'engineer') {
+        if (value.options === 'engineer') {
             inquirer.prompt(engineerQuestions)
+            
+            .then((data) => {
+                const engineer = new Engineer(data);
+                console.log(engineer);
+            })
+
+            // .then(chooseEmployee);
         };
-        if (value.choices === 'intern') {
+        if (value.options === 'intern') {
             inquirer.prompt(internQuestions)
+            .then((intern) => {
+                teamMemberDetails.push(intern);
+            })
+            .then(chooseEmployee);
         };
-        if (value.choices === 'exit') {
+        if (value.options === 'exit') {
             console.log (
                 `
                 You have successfully generated your Team Profile
                 -------------------------------------------------
                 `
             )
-            .then(render(answers));
+            // .then(render(answers));
         };
     })
 
