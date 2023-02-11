@@ -9,9 +9,7 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./src/page-template.js");
-const team = [];
-let employee = ''
-
+const teamMemberDetails = [];
 
 // TODO: Write Code to gather information about the development team members, and render the HTML file.
 
@@ -108,18 +106,20 @@ function chooseEmployee () {
     .then ((value) => {
         if (value.options === 'engineer') {
             inquirer.prompt(engineerQuestions)
-            
-            .then((data) => {
-                const engineer = new Engineer(data);
-                console.log(engineer);
+                // const engineer = new Engineer(data);
+                // console.log(engineer);
+            .then(data => {
+                teamMemberDetails.push(
+                    new Engineer(data.name, data.id, data.email, data.github)
+                    )
             })
-
-            // .then(chooseEmployee);
+            .then(chooseEmployee);
         };
         if (value.options === 'intern') {
             inquirer.prompt(internQuestions)
-            .then((intern) => {
-                teamMemberDetails.push(intern);
+            .then(data => {
+                teamMemberDetails.push(
+                    new Intern(data.name, data.id, data.email, data.school))
             })
             .then(chooseEmployee);
         };
@@ -130,10 +130,21 @@ function chooseEmployee () {
                 -------------------------------------------------
                 `
             )
+            generateFile(outputPath,render(teamMemberDetails))
             // .then(render(answers));
-        };
+            // console.log(teamMemberDetails)
+        }
     })
 
+}
+
+// generate the html
+function generateFile (outputPath, data) {
+    fs.writeFile (outputPath,data,(error) => {
+        if (error) {
+            return console.log (error);
+        }
+    });
 }
 
 // function to initialize program
@@ -144,9 +155,13 @@ function init() {
     -------------------------------------
     `
     )
-    inquirer.prompt(managerQuestions)
+    inquirer.prompt (managerQuestions)
+    .then(data => {
+        teamMemberDetails.push(new Manager(data.name, data.id, data.email, data.officeNumber))
+        console.log(data.id)
+        console.log(data.officeNumber)
+    })
     .then (chooseEmployee)
-    // .then(answers => console.log(answers));
 }
 
 // function call to initialize program
