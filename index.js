@@ -31,7 +31,7 @@ const teamMemberDetails = [];
         },
         {
             type: 'input',
-            name: 'number',
+            name: 'officeNumber',
             message: 'What is your team manager`\s office number?'
         }
     ]
@@ -158,8 +158,6 @@ function init() {
     inquirer.prompt (managerQuestions)
     .then(data => {
         teamMemberDetails.push(new Manager(data.name, data.id, data.email, data.officeNumber))
-        console.log(data.id)
-        console.log(data.officeNumber)
     })
     .then (chooseEmployee)
 }
